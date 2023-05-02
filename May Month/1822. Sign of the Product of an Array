@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int arraySign(vector<int>& nums) {
+        int cnt = 0;
+        bool flag = 0;
+        for(auto it : nums){
+            if(it < 0) cnt++;
+            if(it == 0) flag = 1;
+        }
+        if(flag) return 0;
+        else if(cnt % 2 == 0) return 1;
+        return -1;
+    }
+};
+
+// Time Complexity: O(n)
+// Space Complexity: O(1)
