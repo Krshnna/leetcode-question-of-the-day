@@ -11,3 +11,6 @@ public:
         return sum / (n - 2);
     }
 };
+
+// Time Complexity: O(nlogn)
+// Space Complexity: 0(log n), this is beacuse sort func use this complexity, otherwise O(1)
