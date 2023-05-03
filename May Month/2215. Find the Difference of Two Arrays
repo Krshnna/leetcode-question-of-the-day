@@ -1,0 +1,66 @@
+Approach 1: brute force
+
+class Solution {
+public:
+    
+    void ok(vector<int> arr1, vector<int> arr2, vector<vector<int>> &ans) {
+        set<int> st;
+        st.clear();
+        for(auto it : arr1){
+            bool flag = false;
+            for(auto x : arr2) {
+                if(it == x) {
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag) st.insert(it);
+        }
+        vector<int> v(st.begin(), st.end());
+        ans.push_back(v);
+    }
+    
+    vector<vector<int>> findDifference(vector<int>& arr1, vector<int>& arr2) {
+        vector<vector<int>> ans;
+        ok(arr1, arr2, ans);
+        ok(arr2, arr1, ans);
+        return ans;
+    }
+};
+
+// Time Complexity: O(n * m) n = size of arr1, m = size of arr2
+// Space Complexity: O(1), constant extra space
+
+
+Approach 2: // optimised 
+
+class Solution {
+public:
+    vector<vector<int>> findDifference(vector<int>& arr1, vector<int>& arr2) {
+        vector<vector<int>> ans;
+        
+        map<int, int> mp1, mp2;
+        
+        for(auto it : arr1) mp1[it]++; // storing the frequency of arr1
+        for(auto it : arr2) mp2[it]++; // storing the frequency of arr2
+        vector<int> v1, v2;
+        for(auto it : arr1) {
+            if(mp2[it]) continue; // since we have to find distinct elements
+            v1.push_back(it), mp2[it]++; // if they are not present in arr2, it means current element is distinct, and storing that element in map again because same 
+            // can contain duplicate elements
+        }
+        ans.push_back(v1);
+        
+        // same for arr2
+        for(auto it : arr2) {
+            if(mp1[it]) continue;
+            v2.push_back(it), mp1[it]++;
+        }
+        ans.push_back(v2);
+        
+        return ans;
+    }
+};
+
+// Time Complexity: o(n + n + n + n) = o(n), since we are running four loops
+// Space Complextity: o(2n), because we are using 2 hashmaps
