@@ -1,0 +1,29 @@
+class Solution {
+public:
+    
+    bool ok(char ch) {
+        if(ch == 'a' or ch == 'e' or ch == 'i' or ch == 'o' or ch == 'u') return true;
+        return false;
+    }
+    
+    int maxVowels(string s, int k) {
+        int i = 0, j = 0;
+        int n = s.size();
+        int ans = 0, cnt = 0;
+        while(j < n) {
+            if(ok(s[j])) cnt++;     // we have to check whether the current eleemnt is vowel or not
+            
+            if(j - i + 1 == k) {    // if the window size is equals to k, then do some op
+                if(cnt) ans = max(ans, cnt);    // since, cnt is storing the count of vowel in every window, now store it in max, if it really greater than max.
+                if(ok(s[i])) cnt--;        // now, we have to check if the starting element is vowel or not, beacuse cnt helps in getting the vowel count in every window,
+                // we have to remove that vowel from that window when we are shifting our window
+                i++;
+            }
+            j++;
+        }
+        return ans;
+    }
+};
+
+// TC: O(n)
+// SC: O(1)
