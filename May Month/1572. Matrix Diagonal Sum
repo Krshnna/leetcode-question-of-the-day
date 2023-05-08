@@ -1,3 +1,5 @@
+Approach 1:
+
 class Solution {
 public:
     int diagonalSum(vector<vector<int>>& mat) {
@@ -14,4 +16,26 @@ public:
 };
 
 // TC: O(n * m)
+// SC: O(1)
+
+
+Approach 2:
+
+class Solution {
+public:
+    int diagonalSum(vector<vector<int>>& mat) {
+        
+        int n = mat.size(), m = mat[0].size();
+        int ans = 0;
+        for(int i = 0; i < n; i++) {
+            ans += mat[i][i]; // primary diagonal
+            ans += mat[n - i - 1][i]; // secondary diagonal
+        }
+        if(n % 2 != 0) ans -= mat[n / 2][m / 2]; // if n is odd we get the middle element twice, so we have to subtract middle elements once;
+        
+        return ans;
+    }
+};
+
+// TC: O(n)
 // SC: O(1)
