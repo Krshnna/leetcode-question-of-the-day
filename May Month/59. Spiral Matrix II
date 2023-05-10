@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        
+        if(n == 1) return {{1}};
+        
+        int srow = 0, scol = 0, erow = n - 1, ecol = n - 1;
+        vector<vector<int>> ans(n, vector<int>(n , 0));
+        int cnt = 1;
+        while(srow <= erow and scol <= ecol) {     // this contd. is important
+            for(int i = scol; i <= ecol; i++) {    // fill in first row
+                ans[srow][i] = cnt++;
+            }
+            srow++;
+            for(int i = srow; i <= erow; i++) {    // last column
+                ans[i][ecol] = cnt++;
+            }
+            ecol--;
+            
+            if(srow <= erow) {
+                for(int i = ecol; i >= scol; i--) {   // last row 
+                    ans[erow][i] = cnt++;
+                }
+                erow--;
+            }
+            if(scol <= ecol) {
+                for(int i = erow; i >= srow; i--) {    // first column
+                    ans[i][scol] = cnt++;
+                }
+                scol++;
+            }
+            if(cnt > n * n) break;   // cnt must be less than n * n
+        }
+        
+        // for(auto it : ans) {
+        //     for(auto x : it) cout << x << " ";
+        //     cout << endl;
+        // }
+        
+        return ans;
+    }
+};
+
+// TC: O(m * m)
+// SC: O(m * m)
