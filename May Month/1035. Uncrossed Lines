@@ -1,0 +1,58 @@
+Approach 1 : Brute Force using recursion
+
+class Solution {
+public:
+    
+    int foo(vector<int> &arr1, vector<int> &arr2, int n, int m) {
+        
+        // base case
+        if(n < 0 and m >= 0 or n >= 0 and m < 0 or n < 0 and m < 0) return 0;
+        
+        if(arr1[n] == arr2[m]) {
+            return 1 + foo(arr1, arr2, n - 1, m - 1);
+        }
+        return max(foo(arr1, arr2, n - 1, m), foo(arr1, arr2, n, m - 1));
+    }
+    
+    int maxUncrossedLines(vector<int>& arr1, vector<int>& arr2) {
+        int n = arr1.size(), m = arr2.size();
+        return foo(arr1, arr2, n - 1, m - 1);
+    }
+};
+
+TC: O(2 ^ n)
+SC: O(n * m)
+
+Approach 2: Efficient using Memoization
+
+class Solution {
+public:
+    
+    int foo(vector<int> &arr1, vector<int> &arr2, int n, int m, vector<vector<int>> &dp) {
+        
+        // base case
+        
+        if(n < 0 and m >= 0 or n >= 0 and m < 0 or n < 0 and m < 0) return 0;
+        
+        if(dp[n][m] != -1) return dp[n][m];
+        
+        if(arr1[n] == arr2[m]) {
+            return dp[n][m] = 1 + foo(arr1, arr2, n - 1, m - 1, dp);
+        }
+        return dp[n][m] = max(foo(arr1, arr2, n - 1, m, dp), foo(arr1, arr2, n, m - 1, dp));
+    }
+    
+    int maxUncrossedLines(vector<int>& arr1, vector<int>& arr2) {
+        
+        int n = arr1.size(), m = arr2.size();
+        vector<vector<int>> dp(n + 1, vector<int> (m + 1, -1));
+        int ans = foo(arr1, arr2, n - 1, m - 1, dp);
+        
+        return dp[n - 1][m - 1];
+    }
+};
+
+we just store overlapping problems, so that we just need don't need to calculate everytime, we encounnter. Hence reducing the exponential complexity to O(m * n), which far better than exponential
+
+// TC: O(m * n)
+// SC: O(m * n)
