@@ -1,0 +1,52 @@
+Approach 1: recursive approach TLE
+
+class Solution {
+public:
+    
+    int foo(vector<vector<int>> &arr, int i, int n) {
+        if(i >= n) {
+            return 0; 
+        }
+        int take = arr[i][0] + foo(arr, i + arr[i][1] + 1, n);
+        int not_take = foo(arr, i + 1, n);
+        return max(take, not_take);
+    }
+    
+    long long mostPoints(vector<vector<int>>& arr) {
+        int i = 0, n = arr.size();
+        return foo(arr, i, n);
+    }
+};
+
+// This check all the possible ways to find the answer, hence the complexity increase exponentially
+
+// TC: O(2 ^ n)
+// SC: O(1) if excluded recursive stack space
+
+Approach 2: Memoization
+
+class Solution {
+public:
+    
+    long long foo(vector<vector<int>> &arr, int i, int n, vector<long long> &dp) {
+        if(i >= n) {
+            return 0; 
+        }
+        if(dp[i] != -1) return dp[i];
+        long take = arr[i][0] + foo(arr, i + arr[i][1] + 1, n, dp);
+        long not_take = foo(arr, i + 1, n, dp);
+        return dp[i] = max(take, not_take);
+    }
+    
+    long long mostPoints(vector<vector<int>>& arr) {
+        int i = 0, n = arr.size();
+        vector<long long> dp(n + 1, -1);
+        long long ans = foo(arr, i, n, dp);
+        return dp[0];
+    }
+};
+
+// Everything is same as recursive code, but we store every overlapping subproblems, in order not to calculate everytime.
+
+// TC: O(n) 
+// SC: O(n) for dp array
