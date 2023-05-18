@@ -1,0 +1,91 @@
+Approch 1: 
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    int pairSum(ListNode* head) {
+        vector<int> ans;
+        
+        ListNode* temp = head;
+        
+        while(temp != NULL) {
+            ans.push_back(temp->val);
+            temp = temp->next;        
+        }
+        
+        int i = 0, j = ans.size() - 1;
+        
+        int maxi = 0;
+        
+        while(i < j) {
+            maxi = max(maxi, ans[j] + ans[i]);
+            i++, j--;
+        }
+        return maxi;
+    }
+};
+
+In this approach first traverse the linked list and store every node in an array, then by taking two pointer, first at starting and another at last and find 
+the maximum sum pair.
+
+// TC: O(n)
+// SC: O(n)
+
+
+Approach 2:
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    int pairSum(ListNode* head) {
+        ListNode* slow = head, * fast = head;
+        
+        while(fast != NULL and fast->next != NULL) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        
+        ListNode* nextnode, *prev = NULL;
+        
+        while(slow != NULL) {
+            nextnode = slow->next;
+            slow->next = prev;
+            prev = slow;
+            slow = nextnode;
+        }
+        
+        ListNode* start = head;
+        int maxi = 0;
+        while(prev != NULL) {
+            // cout << prev->val << " " << start->val << endl;
+            maxi = max(maxi, start->val + prev->val);
+            prev = prev->next;
+            start = start->next;
+        }
+        return maxi;
+    }
+};
+
+In this approach instead of storing node in an array, we better do things in LL, we will reverse the linked list from second half and then from starting of first 
+and starting of second we can take pair sum which should be maximum
+
+// TC: O(n)
+// SC: O(1)
