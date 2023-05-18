@@ -18,5 +18,5 @@ public:
 // those nodes are the answers which doesnt' have any incoming edges, since we cant' reach that node are any cost, but there maybe a case that from that node,
 we can reach to all or some the nodes
 
-// TC: O(n)
+// TC: O(N + E) where N is number of nodes and E is number of edges.
 // SC: O(n)
