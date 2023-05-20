@@ -1,0 +1,48 @@
+class Solution {
+public:
+    
+    void dfs(string start, string end, unordered_set<string> &vis, unordered_map<string, unordered_map<string, double>> adj, double &res, double temp) {
+        
+        if(vis.find(start) != vis.end()) return;
+        vis.insert(start);
+        
+        if(start == end) {
+            res = temp;
+            return;
+        }
+        
+        for(auto it : adj[start]) {
+            dfs(it.first, end, vis, adj, res, (temp * it.second));
+        }
+    }
+    
+    vector<double> calcEquation(vector<vector<string>>& eq, vector<double>& val, vector<vector<string>>& q) {
+        
+        int n = eq.size();
+        vector<double> ans;
+        unordered_map<string, unordered_map<string, double>> adj;
+        
+        for(int i = 0; i < n; i++) {
+            string divisor = eq[i][0], dividend = eq[i][1];
+            adj[divisor][dividend] = val[i];
+            adj[dividend][divisor] = 1.0 / val[i];
+        }
+        
+        for(auto it : q) {
+            string divisor = it[0], dividend = it[1];
+            if(adj.find(divisor) == adj.end() or adj.find(dividend) == adj.end())
+                ans.push_back(-1.0);
+            else {
+                unordered_set<string> vis;
+                double res = -1.0, temp = 1.0;
+                dfs(divisor, dividend, vis, adj, res, temp);
+                ans.push_back(res);
+            }
+        }
+        
+        return ans;
+    }
+};
+
+TC: O(q * (E + V)) q is number of queries and E + V is simple bfs/dfs
+SC: O(V + graph_space) V is visited space and graph_space is map of map.
